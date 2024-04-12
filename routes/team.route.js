@@ -5,6 +5,7 @@ const {
   addTeam,
   updateTeam,
   deleteTeam,
+  upsertTeam,
 } = require('../controllers/team.controller');
 
 const router = express.Router();
@@ -16,7 +17,7 @@ router.get('/:id', getTeam);
 router.post('/', addTeam);
 
 //update a team
-router.put('/:id', updateTeam);
+router.put('/', upsertTeam);
 
 //delete a team
 router.delete('/:id', deleteTeam);

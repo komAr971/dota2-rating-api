@@ -59,10 +59,24 @@ const deleteTeam = async (req, res) => {
   }
 };
 
+const upsertTeam = async (req, res) => {
+  try {
+    const team_id = req.body.team_id;
+    const team = await Team.findOneAndUpdate({ team_id: team_id }, req.body, {
+      upsert: true,
+      new: true,
+    });
+    res.status(200).json(team);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   getTeams,
   getTeam,
   addTeam,
   updateTeam,
   deleteTeam,
+  upsertTeam,
 };

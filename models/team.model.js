@@ -12,6 +12,11 @@ const TeamSchema = mongoose.Schema(
       required: true,
     },
 
+    tag: {
+      type: String,
+      require: false,
+    },
+
     logo_url: {
       type: String,
       required: false,
@@ -21,6 +26,11 @@ const TeamSchema = mongoose.Schema(
       type: Number,
       required: true,
       default: 0,
+    },
+
+    last_match_time: {
+      type: Date,
+      required: true,
     },
   },
   {
