@@ -2,7 +2,7 @@ const Team = require('../models/team.model');
 
 const getTeams = async (req, res) => {
   try {
-    const teams = await Team.find();
+    const teams = await Team.find().sort({ rating_place: 1 });
     res.status(200).json(teams);
   } catch (error) {
     res.status(500).json({ message: error.message });
