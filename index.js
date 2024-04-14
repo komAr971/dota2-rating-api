@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const teamRoute = require('./routes/team.route');
 const lastMatchEndTimeRoute = require('./routes/lastMatchEndTime.route');
+const firstPlaceRoute = require('./routes/firstPlace.route');
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.use(express.json());
 //routes
 app.use('/api/teams', teamRoute);
 app.use('/api/lastMatchEndTime', lastMatchEndTimeRoute);
+app.use('/api/firstPlaces', firstPlaceRoute);
 
 app.get('/', (req, res) => {
   res.send('Hello world!');
