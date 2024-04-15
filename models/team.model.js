@@ -5,6 +5,7 @@ const TeamSchema = mongoose.Schema(
     team_id: {
       type: Number,
       required: true,
+      unique: true,
     },
 
     name: {
@@ -25,7 +26,6 @@ const TeamSchema = mongoose.Schema(
     rating_place: {
       type: Number,
       required: true,
-      default: 0,
     },
 
     last_match_time: {
@@ -33,10 +33,10 @@ const TeamSchema = mongoose.Schema(
       required: true,
     },
   },
-  {
-    timestamps: true,
-  },
+  { versionKey: false },
 );
+
+TeamSchema.index({ team_id: 1 }, { unique: true });
 
 const Team = mongoose.model('Team', TeamSchema);
 

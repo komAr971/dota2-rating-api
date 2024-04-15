@@ -1,26 +1,34 @@
 const mongoose = require('mongoose');
 
-const FirstPlaceSchema = mongoose.Schema({
-  team_id: {
-    type: Number,
-    required: true,
-  },
+const FirstPlaceSchema = mongoose.Schema(
+  {
+    team_id: {
+      type: Number,
+      required: true,
+    },
 
-  match_time: {
-    type: Date,
-    required: true,
-  },
+    name: {
+      type: String,
+      required: false,
+    },
 
-  league_id: {
-    type: Number,
-    required: true,
-  },
+    match_time: {
+      type: Date,
+      required: true,
+    },
 
-  league_name: {
-    type: String,
-    required: false,
+    league_id: {
+      type: Number,
+      required: true,
+    },
+
+    league_name: {
+      type: String,
+      required: false,
+    },
   },
-});
+  { versionKey: false },
+);
 
 const FirstPlace = mongoose.model('FirstPlace', FirstPlaceSchema);
 

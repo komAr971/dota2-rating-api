@@ -18,9 +18,14 @@ app.get('/', (req, res) => {
   res.send('Hello world!');
 });
 
+const options = {
+  autoIndex: true, //this is the code I added that solved it all
+};
+
 mongoose
   .connect(
     'mongodb+srv://dota2-rating-api:5Yi5pbipBijdyDIt@cluster0.paihvfs.mongodb.net/dota2-rating?retryWrites=true&w=majority&appName=Cluster0',
+    options,
   )
   .then(() => {
     console.log('Connected to database!');
@@ -28,6 +33,4 @@ mongoose
       console.log('Server is running on port 3000');
     });
   })
-  .catch(() => {
-    console.log('Connection failed!');
-  });
+  .catch((err) => console.log(err));

@@ -1,11 +1,14 @@
 const mongoose = require('mongoose');
 
-const LastMatchEndTimeSchema = mongoose.Schema({
-  last_match_end_time: {
-    type: Date,
-    require: true,
+const LastMatchEndTimeSchema = mongoose.Schema(
+  {
+    last_match_end_time: {
+      type: Date,
+      require: true,
+    },
   },
-});
+  { versionKey: false },
+);
 
 const LastMatchEndTime = mongoose.model(
   'LastMatchEndTime',
