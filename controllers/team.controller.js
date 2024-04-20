@@ -1,4 +1,5 @@
 const Team = require('../models/team.model');
+const FirstPlace = require('../models/firstPlace.model');
 
 const getTeams = async (req, res) => {
   try {
@@ -133,6 +134,17 @@ const deleteInactiveTeams = async (req, res) => {
       const filterToUpdate = { rating_place: { $gte: team.rating_place } };
       await Team.updateMany(filterToUpdate, {
         $inc: { rating_place: -1 },
+      });
+    }
+
+    const firstTeam = await Team.findOne({ rating_place: 1 });
+    if (firstTeam.team_id !== teamstoDelete[0].team_id) {
+      await FirstPlace.create({
+        team_id: firstTeam.team_id,
+        name: firstTeam.name,
+        match_time: date,
+        league_id: 0,
+        league_name: `${teamstoDelete[0].name} was inactive`,
       });
     }
 
