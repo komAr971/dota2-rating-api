@@ -25,7 +25,7 @@ const TeamSchema = mongoose.Schema(
 
     rating_place: {
       type: Number,
-      required: true,
+      required: false,
     },
 
     last_match_time: {

@@ -6,6 +6,7 @@ const getTeams = async (req, res) => {
     res.status(200).json(teams);
   } catch (error) {
     res.status(500).json({ message: error.message });
+    console.log(error);
   }
 };
 
@@ -16,6 +17,7 @@ const getTeam = async (req, res) => {
     res.status(200).json(team);
   } catch (error) {
     res.status(500).json({ message: error.message });
+    console.log(error);
   }
 };
 
@@ -23,7 +25,7 @@ const addTeam = async (req, res) => {
   try {
     const teamsCount = await Team.countDocuments();
     const lastRatingPlace = teamsCount + 1;
-    const teamRatingPlace = req.body.rating_place;
+    const teamRatingPlace = req.body.rating_place || lastRatingPlace;
 
     if (teamRatingPlace > lastRatingPlace) {
       return res.status(400).json({
@@ -33,14 +35,15 @@ const addTeam = async (req, res) => {
 
     if (teamRatingPlace < lastRatingPlace) {
       const filter = { rating_place: { $gte: teamRatingPlace } };
-      const updatedTeams = await Team.updateMany(filter, {
+      await Team.updateMany(filter, {
         $inc: { rating_place: 1 },
       });
     }
-    const team = await Team.create(req.body);
+    const team = await Team.create({ ...req.body, rating_place: teamRatingPlace });
     res.status(200).json(team);
   } catch (error) {
     res.status(500).json({ message: error.message });
+    console.log(error);
   }
 };
 
@@ -61,12 +64,16 @@ const updateTeam = async (req, res) => {
     const ratingPlaceNew = req.body.rating_place;
 
     if (ratingPlaceNew > lastRatingPlace) {
+      console.log(
+        `Cannot set the team rating place  greater than ${lastRatingPlace}`,
+      );
       return res.status(400).json({
         error: `Cannot set the team rating place  greater than ${lastRatingPlace}`,
       });
     }
 
     if (ratingPlaceOld < ratingPlaceNew) {
+      console.log(`Cannot update the rating place to a greater value`);
       return res.status(400).json({
         error: `Cannot update the rating place to a greater value`,
       });
@@ -76,7 +83,7 @@ const updateTeam = async (req, res) => {
       await Team.findOneAndUpdate({ team_id: id }, { rating_place: 0 });
 
       const filter = { rating_place: { $lt: ratingPlaceOld, $gte: ratingPlaceNew } };
-      const updatedTeams = await Team.updateMany(filter, {
+      await Team.updateMany(filter, {
         $inc: { rating_place: 1 },
       });
     }
@@ -87,21 +94,28 @@ const updateTeam = async (req, res) => {
     res.status(200).json(updatedTeam);
   } catch (error) {
     res.status(500).json({ message: error.message });
+    console.log(error);
   }
 };
 
 const deleteTeam = async (req, res) => {
   try {
     const { id } = req.params;
-    const team = await Team.findByIdAndDelete(id);
+    const team = await Team.findOneAndDelete({ team_id: id });
 
     if (!team) {
       return res.status(404).json({ message: 'Team not found' });
     }
 
+    const filter = { rating_place: { $gte: team.rating_place } };
+    await Team.updateMany(filter, {
+      $inc: { rating_place: -1 },
+    });
+
     res.status(200).json({ message: 'Team deleted saccessfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
+    console.log(error);
   }
 };
 

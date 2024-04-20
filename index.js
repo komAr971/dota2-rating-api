@@ -14,10 +14,6 @@ app.use('/api/teams', teamRoute);
 app.use('/api/lastMatchEndTime', lastMatchEndTimeRoute);
 app.use('/api/firstPlaces', firstPlaceRoute);
 
-app.get('/', (req, res) => {
-  res.send('Hello world!');
-});
-
 const options = {
   autoIndex: true, //this is the code I added that solved it all
 };
