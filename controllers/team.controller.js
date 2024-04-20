@@ -127,7 +127,6 @@ const deleteInactiveTeams = async (req, res) => {
     const INACTIVE_PERIOD = 6;
     const date = req.body.date ? new Date(req.body.date) : new Date();
     date.setMonth(date.getMonth() - INACTIVE_PERIOD);
-    console.log(date);
 
     const filter = { last_match_time: { $lt: date } };
     const teamsToDelete = await Team.find(filter).sort({ rating_place: 1 });
