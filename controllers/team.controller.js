@@ -119,10 +119,35 @@ const deleteTeam = async (req, res) => {
   }
 };
 
+const deleteInactiveTeams = async (req, res) => {
+  try {
+    const INACTIVE_PERIOD = 6;
+    const date = req.body.date ? new Date(req.body.date) : new Date();
+    date.setMonth(date.getMonth() - INACTIVE_PERIOD);
+
+    const filter = { last_match_time: { $lt: date } };
+    const teamstoDelete = await Team.find(filter).sort({ rating_place: 1 });
+    const { deletedCount } = await Team.deleteMany(filter);
+
+    for (const team of teamstoDelete) {
+      const filterToUpdate = { rating_place: { $gte: team.rating_place } };
+      await Team.updateMany(filterToUpdate, {
+        $inc: { rating_place: -1 },
+      });
+    }
+
+    res.status(200).json({ message: `${deletedCount} inactive teams deleted` });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+    console.log(error);
+  }
+};
+
 module.exports = {
   getTeams,
   getTeam,
   addTeam,
   updateTeam,
   deleteTeam,
+  deleteInactiveTeams,
 };

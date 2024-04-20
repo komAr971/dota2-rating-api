@@ -5,6 +5,7 @@ const {
   addTeam,
   updateTeam,
   deleteTeam,
+  deleteInactiveTeams,
 } = require('../controllers/team.controller');
 
 const router = express.Router();
@@ -20,5 +21,8 @@ router.put('/:id', updateTeam);
 
 //delete a team
 router.delete('/:id', deleteTeam);
+
+//delete inactive teams
+router.post('/delete-inactive', deleteInactiveTeams);
 
 module.exports = router;
