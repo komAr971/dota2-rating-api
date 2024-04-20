@@ -1,5 +1,6 @@
 const Team = require('../models/team.model');
 const FirstPlace = require('../models/firstPlace.model');
+const { addFirstPlace } = require('./firstPlace.controller');
 
 const getTeams = async (req, res) => {
   try {
@@ -40,6 +41,7 @@ const addTeam = async (req, res) => {
         $inc: { rating_place: 1 },
       });
     }
+
     const team = await Team.create({ ...req.body, rating_place: teamRatingPlace });
     res.status(200).json(team);
   } catch (error) {
@@ -125,12 +127,13 @@ const deleteInactiveTeams = async (req, res) => {
     const INACTIVE_PERIOD = 6;
     const date = req.body.date ? new Date(req.body.date) : new Date();
     date.setMonth(date.getMonth() - INACTIVE_PERIOD);
+    console.log(date);
 
     const filter = { last_match_time: { $lt: date } };
-    const teamstoDelete = await Team.find(filter).sort({ rating_place: 1 });
+    const teamsToDelete = await Team.find(filter).sort({ rating_place: 1 });
     const { deletedCount } = await Team.deleteMany(filter);
 
-    for (const team of teamstoDelete) {
+    for (const team of teamsToDelete) {
       const filterToUpdate = { rating_place: { $gte: team.rating_place } };
       await Team.updateMany(filterToUpdate, {
         $inc: { rating_place: -1 },
@@ -138,13 +141,13 @@ const deleteInactiveTeams = async (req, res) => {
     }
 
     const firstTeam = await Team.findOne({ rating_place: 1 });
-    if (firstTeam.team_id !== teamstoDelete[0].team_id) {
+    if (teamsToDelete[0] && firstTeam.team_id !== teamsToDelete[0].team_id) {
       await FirstPlace.create({
         team_id: firstTeam.team_id,
         name: firstTeam.name,
         match_time: date,
         league_id: 0,
-        league_name: `${teamstoDelete[0].name} was inactive`,
+        league_name: `${teamsToDelete[0].name} was inactive`,
       });
     }
 
