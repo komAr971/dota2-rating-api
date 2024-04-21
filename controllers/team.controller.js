@@ -140,7 +140,7 @@ const deleteInactiveTeams = async (req, res) => {
     }
 
     const firstTeam = await Team.findOne({ rating_place: 1 });
-    if (teamsToDelete[0] && firstTeam.team_id !== teamsToDelete[0].team_id) {
+    if (teamsToDelete[0]?.rating_place === 1) {
       await FirstPlace.create({
         team_id: firstTeam.team_id,
         name: firstTeam.name,
