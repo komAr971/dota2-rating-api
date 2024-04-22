@@ -10,7 +10,7 @@ const TeamSchema = mongoose.Schema(
 
     name: {
       type: String,
-      required: false,
+      required: true,
     },
 
     tag: {
@@ -20,11 +20,6 @@ const TeamSchema = mongoose.Schema(
 
     logo_url: {
       type: String,
-      required: false,
-    },
-
-    rating_place: {
-      type: Number,
       required: false,
     },
 

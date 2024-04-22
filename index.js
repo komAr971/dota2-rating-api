@@ -1,8 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const teamRoute = require('./routes/team.route');
-const firstPlaceRoute = require('./routes/firstPlace.route');
 const matchRoute = require('./routes/match.route');
+const lastAnalyzedDateRoute = require('./routes/lastAnalyzedDate.route');
+const ratingRoute = require('./routes/rating.route');
 
 const app = express();
 
@@ -11,17 +12,16 @@ app.use(express.json());
 
 //routes
 app.use('/api/teams', teamRoute);
-app.use('/api/firstPlaces', firstPlaceRoute);
 app.use('/api/matches', matchRoute);
-
-const options = {
-  autoIndex: true, //this is the code I added that solved it all
-};
+app.use('/api/last-analyzed-date', lastAnalyzedDateRoute);
+app.use('/api/rating', ratingRoute);
 
 mongoose
   .connect(
     'mongodb+srv://dota2-rating-api:5Yi5pbipBijdyDIt@cluster0.paihvfs.mongodb.net/dota2-rating?retryWrites=true&w=majority&appName=Cluster0',
-    options,
+    {
+      autoIndex: true,
+    },
   )
   .then(() => {
     console.log('Connected to database!');

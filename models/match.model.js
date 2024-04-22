@@ -42,6 +42,11 @@ const MatchSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+
+    new_top_1: {
+      type: Boolean,
+      required: false,
+    },
   },
   { versionKey: false },
 );
