@@ -1,6 +1,5 @@
 const Team = require('../models/team.model');
 const FirstPlace = require('../models/firstPlace.model');
-const { addFirstPlace } = require('./firstPlace.controller');
 
 const getTeams = async (req, res) => {
   try {

@@ -1,8 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const teamRoute = require('./routes/team.route');
-const lastMatchEndTimeRoute = require('./routes/lastMatchEndTime.route');
 const firstPlaceRoute = require('./routes/firstPlace.route');
+const matchRoute = require('./routes/match.route');
 
 const app = express();
 
@@ -11,8 +11,8 @@ app.use(express.json());
 
 //routes
 app.use('/api/teams', teamRoute);
-app.use('/api/lastMatchEndTime', lastMatchEndTimeRoute);
 app.use('/api/firstPlaces', firstPlaceRoute);
+app.use('/api/matches', matchRoute);
 
 const options = {
   autoIndex: true, //this is the code I added that solved it all
