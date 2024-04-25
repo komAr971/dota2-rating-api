@@ -39,6 +39,7 @@ const getEnrichedRating = async (req, res) => {
         },
       },
       { $sort: { rating_place: 1 } },
+      { $project: { _id: 0 } },
     ]);
 
     res.status(200).json(teams);
