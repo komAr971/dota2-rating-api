@@ -70,7 +70,6 @@ const unsetNewTop1 = async (req, res) => {
       },
       { $unset: { new_top_1: 1 } },
     );
-    console.log(updateResult);
     res.status(200).json({
       message: `${updateResult.modifiedCount} matches updated. new_top_1 flag removed.`,
     });
