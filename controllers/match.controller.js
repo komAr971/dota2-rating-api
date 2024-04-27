@@ -42,6 +42,26 @@ const setNewTop1 = async (req, res) => {
   }
 };
 
+const setNewTop1Bulk = async (req, res) => {
+  try {
+    const matches = req.body;
+
+    const bulkOps = matches.map((match_id) => ({
+      updateOne: {
+        filter: { match_id: match_id },
+        update: { new_top_1: true },
+      },
+    }));
+
+    const result = await Match.bulkWrite(bulkOps);
+
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+    console.log(error);
+  }
+};
+
 const unsetNewTop1 = async (req, res) => {
   try {
     const updateResult = await Match.updateMany(
@@ -88,6 +108,7 @@ module.exports = {
   getMatchesAfter,
   addMatch,
   setNewTop1,
+  setNewTop1Bulk,
   unsetNewTop1,
   getTop1Matches,
   getLastMatchEndTime,
