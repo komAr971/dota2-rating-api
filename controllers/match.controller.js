@@ -103,6 +103,16 @@ const getLastMatchEndTime = async (req, res) => {
   }
 };
 
+const deleteInactive = async (req, res) => {
+  try {
+    await Match.deleteMany({ match_id: -1 });
+    res.status(200).json({ message: 'Inactive matches was deleted' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+    console.log(error);
+  }
+};
+
 module.exports = {
   getMatchesAfter,
   addMatch,
@@ -111,4 +121,5 @@ module.exports = {
   unsetNewTop1,
   getTop1Matches,
   getLastMatchEndTime,
+  deleteInactive,
 };
