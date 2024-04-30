@@ -61,9 +61,20 @@ const updateTeams = async (req, res) => {
   }
 };
 
+const deleteTeams = async (req, res) => {
+  try {
+    await Team.deleteMany({});
+    res.status(200).json({ message: 'Teams was deleted' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+    console.log(error);
+  }
+};
+
 module.exports = {
   getTeams,
   getTeam,
   updateTeam,
   updateTeams,
+  deleteTeams,
 };
