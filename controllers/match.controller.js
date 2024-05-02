@@ -105,7 +105,7 @@ const getLastMatchEndTime = async (req, res) => {
 
 const deleteInactive = async (req, res) => {
   try {
-    await Match.deleteMany({ match_id: -1 });
+    await Match.deleteMany({ match_id: { $lt: 0 } });
     res.status(200).json({ message: 'Inactive matches was deleted' });
   } catch (error) {
     res.status(500).json({ message: error.message });
